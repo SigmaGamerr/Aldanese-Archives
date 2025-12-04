@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+  <head>
+    <title>{{ soldier.name }} — Aldanese Archives</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  </head>
+  <body>
+    <a href="{{ url_for('index') }}">&larr; Back</a>
+    <h2>{{ soldier.name }} ({{ soldier.rank }} {{ ranks_all.get(soldier.rank, '') }})</h2>
+    <p>Username: {{ soldier.username }} | Joined: {{ soldier.join_date }} | Last change: {{ soldier.last_change }}</p>
+
+    <section class="section">
+      <h3>Promote/Demote</h3>
+      <form method="post" action="{{ url_for('promote') }}">
+        <input type="hidden" name="id" value="{{ soldier.id }}">
+        <select name="new_rank" required>
+          {% for code, label in ranks_officers.items() %}
+            <option value="{{ code }}">{{ code }} — {{ label }}</option>
+          {% endfor %}
+          {% for code, label in ranks_enlisted.items() %}
+            <option value="{{ code }}">{{ code }} — {{ label }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" {% if not session.role or session.role == 'LR' %}disabled{% endif %}>Promote</button>
+      </form>
+
+      <form method="post" action="{{ url_for('demote') }}">
+        <input type="hidden" name="id" value="{{ soldier.id }}">
+        <select name="new_rank" required>
+          {% for code, label in ranks_officers.items() %}
+            <option value="{{ code }}">{{ code }} — {{ label }}</option>
+          {% endfor %}
+          {% for code, label in ranks_enlisted.items() %}
+            <option value="{{ code }}">{{ code }} — {{ label }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" {% if not session.role or session.role == 'LR' %}disabled{% endif %}>Demote</button>
+      </form>
+      {% if not session.role or session.role == 'LR' %}
+        <p class="badge">Login required for rank changes</p>
+      {% endif %}
+    </section>
+
+    <section class="section">
+      <h3>Award medal</h3>
+      <form method="post" action="{{ url_for('medal') }}">
+        <input type="hidden" name="id" value="{{ soldier.id }}">
+        <select name="medal" required>
+          {% for k, v in medals.items() %}
+            <option value="{{ v }}">{{ k }} — {{ v }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" {% if not session.role or session.role == 'LR' %}disabled{% endif %}>Award</button>
+      </form>
+      {% if not session.role or session.role == 'LR' %}
+        <p class="badge">Login required to award medals</p>
+      {% endif %}
+    </section>
+
+    <section class="section">
+      <h3>Medals</h3>
+      {% if soldier.medals %}
+        <ul>
+          {% for m in soldier.medals %}
+            <li>{{ m }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>None</p>
+      {% endif %}
+    </section>
+
+    <section class="section">
+      <h3>History</h3>
+      <p style="white-space: pre-wrap;">{{ army_history }}</p>
+    </section>
+
+    <section class="section">
+      <h3>Change log</h3>
+      {% if soldier.history %}
+        <ul>
+          {% for h in soldier.history %}
+            <li>{{ h.timestamp }} — {{ h.action }} {{ h.old_rank }} → {{ h.new_rank }} — {{ h.by }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No changes yet.</p>
+      {% endif %}
+    </section>
+  </body>
+</html>
