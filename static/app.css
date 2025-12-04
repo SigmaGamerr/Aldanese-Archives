@@ -1,0 +1,15 @@
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; color: #1b1b1b; }
+header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem; }
+h1, h2, h3 { margin: 0 0 0.5rem 0; }
+a { color: #0a66c2; text-decoration: none; }
+a:hover { text-decoration: underline; }
+nav a { margin-right: 1rem; }
+form { margin: 1rem 0; display: grid; grid-template-columns: 1fr 1fr auto; gap: 0.5rem; }
+input, select, button { padding: 0.5rem; }
+ul { list-style: none; padding: 0; }
+li { margin: 0.25rem 0; }
+.section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #ddd; }
+.badge { display: inline-block; padding: 0.2rem 0.4rem; background: #efefef; border-radius: 4px; margin-right: 0.25rem; }
+.flash { padding: 0.5rem; border-radius: 6px; margin: 0.5rem 0; }
+.flash.error { background: #ffe2e2; color: #7a1212; }
+.flash.success { background: #e4fde4; color: #115511; }
